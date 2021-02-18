@@ -1,5 +1,5 @@
 class Api::V1::AuthController < ApplicationController
-  skip_before_action :authorized, only: [:create]
+  # skip_before_action :authorized, only: [:create]
  
   def create
     @user = User.find_by(username: user_login_params[:username])
@@ -12,11 +12,19 @@ class Api::V1::AuthController < ApplicationController
       render json: { message: 'Invalid username or password' }, status: :unauthorized
     end
   end
- 
+
+  # def auto_login
+  #   if current_user
+  #     render json: current_user
+  #   else
+  #     render json: {errors: "No User Logged In"}
+  #   end
+  # end 
+
   private
  
   def user_login_params
     # params { user: {username: 'Chandler Bing', password: 'hi' } }
-    params.require(:user).permit(:username, :password,:username, :email, :name, :password)
+    params.require(:user).permit(:username, :email, :name, :password)
   end
 end
