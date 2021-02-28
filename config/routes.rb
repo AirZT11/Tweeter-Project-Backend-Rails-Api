@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
+
   namespace :api do
     namespace :v1 do
+      resources :likes
       resources :tweets
       resources :users, only: [:create, :index]
       post '/login', to: 'auth#create'
