@@ -15,19 +15,10 @@ class Api::V1::LikesController < ApplicationController
 
   # POST /likes
   def create
-    @like = Like.new(like_params)
+    @like = Like.create(like_params)
 
-    if @like.save
-      render json: @like, status: :created, location: api_v1_likes_path(@like)
-    else
-      render json: @like.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /likes/1
-  def update
-    if @like.update(like_params)
-      render json: @like
+    if @like.valid?
+      render json: { like: LikeSerializer.new(@like) }, status: :created, location: api_v1_likes_path(@like)
     else
       render json: @like.errors, status: :unprocessable_entity
     end

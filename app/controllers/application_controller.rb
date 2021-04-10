@@ -12,30 +12,13 @@ class ApplicationController < ActionController::API
   end
  
   def decode(token)
-    # if auth_header
-      # token = auth_header.split(' ')[1]
-
-      # begin
-        JWT.decode(token, ENV['MY_SECRET'], true, {algorithm: 'HS256'})[0]
-      # # rescue JWT::DecodeError
-      #   nil
-      # end
-    # end
+    JWT.decode(token, ENV['MY_SECRET'], true, {algorithm: 'HS256'})[0]
   end
- 
-  # def current_user
-  #   if decode
-  #     user_id = decode[0]['user_id']
-  #     @user = User.find_by(id: user_id)
-  #   end
-  # end
- 
-  # def logged_in?
-  #   # using !! allows #current_user to return a boolean instead of the object itself
-  #   !!current_user
-  # end
- 
-  # def authorized
-  #   render json: { message: 'Please log in' }, status: :unauthorized unless logged_in?
+
+  # def current_user 
+  #   token = request.headers["Authentication"].split(" ")[1]
+  #   payload = decode(token)
+  #   user_id = payload["user_id"]
+  #   User.find(user_id)
   # end
 end

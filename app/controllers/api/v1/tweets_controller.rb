@@ -24,9 +24,10 @@ class Api::V1::TweetsController < ApplicationController
   # POST /tweets
   def create
     @tweet = Tweet.create(tweet_params)
-
     if @tweet.valid?
-      render json: @tweet, status: :created, location: api_v1_tweets_path(@tweet)
+      render json: {
+      tweet: TweetSerializer.new(@tweet)}, 
+      status: :created, location: api_v1_tweets_path(@tweet)
     else
       render json: @tweet.errors, status: :unprocessable_entity
     end
@@ -54,6 +55,6 @@ class Api::V1::TweetsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def tweet_params
-      params.require(:tweet).permit(:message, :user_id)
+      params.require(:tweet).permit(:message, :user_id, :image)
     end
 end
