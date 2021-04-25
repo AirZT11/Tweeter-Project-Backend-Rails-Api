@@ -2,17 +2,27 @@ class Api::V1::TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :update, :destroy]
   # skip_before_action :authorized
 
-  def tweet
+  # GET /tweets
+  def index
+    @tweets = Tweet.all.order('tweets.created_at DESC')
+    render json: @tweets
+  end
+
+  # GET /tweets_users
+  def user_follow_tweets
     token = request.headers["Authentication"].split(" ")[1]
     payload = decode(token)
     user_id = payload["user_id"]
-    render json: {tweet: Tweet.find(user_id) }, status: :accepted
+    @user = User.find(user_id)
+    @tweets = Tweet.from_users_followed_by(@user).order('tweets.created_at DESC')
+    render json: @tweets
   end
 
-  # GET /tweets
-  def index
-    @tweets = Tweet.all
-
+  # GET /user_tweets
+  def user_specific_tweets
+    user_id = request.headers['UserId']
+    @user = User.find(user_id)
+    @tweets = Tweet.from_user(@user).order('tweets.created_at DESC')
     render json: @tweets
   end
 
@@ -29,7 +39,10 @@ class Api::V1::TweetsController < ApplicationController
       tweet: TweetSerializer.new(@tweet)}, 
       status: :created, location: api_v1_tweets_path(@tweet)
     else
-      render json: @tweet.errors, status: :unprocessable_entity
+      render json: {
+        errors: @tweet.errors, 
+        status: :unprocessable_entity
+      }
     end
   end
 
@@ -55,6 +68,6 @@ class Api::V1::TweetsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def tweet_params
-      params.require(:tweet).permit(:message, :user_id, :image)
+      params.permit(:message, :user_id, :image)
     end
 end

@@ -12,10 +12,30 @@ class User < ApplicationRecord
   has_one_attached :image
   
   has_secure_password
+
+  validates :name, presence: true
+  validates :email, uniqueness: { case_sensitive: false }
+  # validates :email,
+  # format: { with: /^(.+)@(.+)$/, message: "Email invalid"  },
+  #           uniqueness: { case_sensitive: false },
+  #           length: { minimum: 4, maximum: 254 }     
+  validates :email, presence: true
   validates :username, uniqueness: { case_sensitive: false }
-  # validates :password, presence: true, length: { minimum: 6 }
+  validates :username, presence: true
+  validates :password, presence: true, length: { minimum: 6 }, on: :create
+
   def get_image_url
     url_for(self.image)
+  end
+
+  def self.users_followed_by(user)
+    followed_user_ids = user.followee_ids
+    where(id: followed_user_ids)
+  end
+
+  def self.followers_from(user)
+    follower_user_ids = user.follower_ids
+    where(id: follower_user_ids)
   end
 
 end

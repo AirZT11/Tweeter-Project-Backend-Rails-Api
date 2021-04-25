@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  # before_action :authorized
+  # include ActionController::Helpers
 
   def encode_token(payload)
     # should store secret in env variable
@@ -15,10 +15,4 @@ class ApplicationController < ActionController::API
     JWT.decode(token, ENV['MY_SECRET'], true, {algorithm: 'HS256'})[0]
   end
 
-  # def current_user 
-  #   token = request.headers["Authentication"].split(" ")[1]
-  #   payload = decode(token)
-  #   user_id = payload["user_id"]
-  #   User.find(user_id)
-  # end
 end
