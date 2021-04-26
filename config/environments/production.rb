@@ -1,4 +1,8 @@
 Rails.application.configure do
+  
+  # host for Heroku domain
+  config.action_mailer.default_url_options = { :host => 'https://tweeter-heroku-backend.herokuapp.com/' }
+  
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
