@@ -2,6 +2,9 @@ Rails.application.configure do
   
   # host for Heroku domain
   Rails.application.routes.default_url_options[:host] ='https://tweeter-heroku-backend.herokuapp.com/'
+
+  SECRET = ENV['SECRET_KEY_BASE'] || Rails.application.secrets.secret_key_base
+
   
   # Settings specified here will take precedence over those in config/application.rb.
 

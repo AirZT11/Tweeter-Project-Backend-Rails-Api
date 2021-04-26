@@ -29,5 +29,8 @@
 # Ignore application configuration
 /config/application.yml
 
-# Ignore clooudinary file
-/config/clooudinary.yml
+# Ignore cloudinary file
+/config/cloudinary.yml
+
+# Ignore secret
+/config/master.key
