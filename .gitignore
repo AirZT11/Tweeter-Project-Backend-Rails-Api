@@ -31,3 +31,6 @@
 
 # Ignore cloudinary file
 /config/cloudinary.yml
+
+#Ignore .env
+/.env

@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Rails.application.routes.url_helpers
+  # include Rails.application.routes.url_helpers
 
   has_many :tweets, :dependent => :destroy
   has_many :likes, through: :tweets, :dependent => :destroy
